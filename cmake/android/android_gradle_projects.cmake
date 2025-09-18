@@ -13,7 +13,7 @@ else()
   set(KOTLIN_STD_LIB "" CACHE STRING "Kotlin Standard Library dependency")
 endif()
 
-set(GRADLE_VERSION "5.6.4" CACHE STRING "Gradle version")
+set(GRADLE_VERSION "8.0.1" CACHE STRING "Gradle version")
 message(STATUS "Gradle version: ${GRADLE_VERSION}")
 
 set(ANDROID_COMPILE_SDK_VERSION "26" CACHE STRING "Android compileSdkVersion")
@@ -90,15 +90,9 @@ else()
 endif()
 
 # set android gradle java version in build.gradle and set aidl config
-if(NOT (ANDROID_GRADLE_PLUGIN_VERSION VERSION_LESS "8.0.0"))
-  # AGP-8.0 requires a minimum JDK version of JDK17
   ocv_update(ANDROID_GRADLE_JAVA_VERSION_INIT "17")
   # Enable aidl configuration for OpenCV compile with AGP-8.0
   ocv_update(ANDROID_GRADLE_BUILD_FEATURE_AIDL "buildFeatures { aidl true }")
-else()
-  ocv_update(ANDROID_GRADLE_JAVA_VERSION_INIT "1_8")
-  ocv_update(ANDROID_GRADLE_BUILD_FEATURE_AIDL "")
-endif()
 
 set(ANDROID_GRADLE_JAVA_VERSION "${ANDROID_GRADLE_JAVA_VERSION_INIT}" CACHE STRING "Android Gradle Java version")
 message(STATUS "Android Gradle Java version: ${ANDROID_GRADLE_JAVA_VERSION}")
