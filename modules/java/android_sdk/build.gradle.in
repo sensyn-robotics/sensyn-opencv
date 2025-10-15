@@ -99,6 +99,7 @@ try {
 
 def openCVersionName = "@OPENCV_VERSION@"
 def openCVersionCode = ((@OPENCV_VERSION_MAJOR@ * 100 + @OPENCV_VERSION_MINOR@) * 100 + @OPENCV_VERSION_PATCH@) * 10 + 0
+def jvmTargetVersion = System.getenv("OPENCV_JVM_TARGET") ?: "17"
 
 println "OpenCV: " +openCVersionName + " " + project.buildscript.sourceFile
 
@@ -150,8 +151,20 @@ android {
             path (project.projectDir.toString() + '/libcxx_helper/CMakeLists.txt')
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.toVersion(jvmTargetVersion)
+        targetCompatibility JavaVersion.toVersion(jvmTargetVersion)
+    }
+
     @BUILD_GRADLE_ANDROID_PUBLISHING_CONFIG@
 }
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+    kotlinOptions {
+        jvmTarget = jvmTargetVersion
+    }
+}
+
 @BUILD_GRADLE_PUBLISHING_CONFIG@
 dependencies {
 }
